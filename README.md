@@ -250,6 +250,20 @@ accuracy_percent = 100 - mape
 - META (Meta/Facebook)
 - NVDA (NVIDIA)
 
+## Result
+- Google
+![Header](src/static/main/GOOGL_forecast.png)
+
+- NVIDIA
+![Header](src/static/main/nvda_forecast.png)
+
+- Oracle
+![Header](src/static/main/orcl_forecast.png)
+
+- Tesla
+![Header](src/static/main/tsla_forecast.png)
+
+
 ## ⚠️ Disclaimer
 
 **This application is for educational and research purposes only.**
