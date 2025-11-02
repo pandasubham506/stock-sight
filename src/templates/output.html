@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>{{ticker}} Forecast - StockSight</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- CSS -->
+	<link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="../static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="../static/css/bootstrap.min.css">
+	<style>
+		body {
+			overflow: hidden;
+			height: 100vh;
+			margin: 0;
+			padding: 0;
+		}
+		.dashboard-container {
+			display: grid;
+			grid-template-rows: auto 1fr;
+			height: 100vh;
+			padding: 15px;
+			gap: 15px;
+			box-sizing: border-box;
+		}
+		.header-section {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: 10px 20px;
+			background: rgba(0, 0, 0, 0.3);
+			border-radius: 8px;
+		}
+		.header-left h2 {
+			margin: 0;
+			font-size: 22px;
+		}
+		.header-left p {
+			margin: 5px 0 0 0;
+			font-size: 12px;
+			color: #aaa;
+		}
+		.content-grid {
+			display: grid;
+			grid-template-columns: 350px 1fr;
+			gap: 15px;
+			height: 100%;
+			overflow: hidden;
+		}
+		.left-panel {
+			display: flex;
+			flex-direction: column;
+			gap: 12px;
+			overflow-y: auto;
+		}
+		.info-card {
+			background: rgba(0, 0, 0, 0.3);
+			padding: 15px;
+			border-radius: 8px;
+			border-left: 4px solid #4CAF50;
+		}
+		.info-card h3 {
+			margin: 0 0 8px 0;
+			font-size: 14px;
+			color: #4CAF50;
+			text-transform: uppercase;
+			letter-spacing: 1px;
+		}
+		.info-card .value {
+			font-size: 28px;
+			font-weight: bold;
+			color: white;
+			margin: 5px 0;
+		}
+		.info-card .sub-value {
+			font-size: 11px;
+			color: #888;
+			margin-top: 5px;
+		}
+		.price-card {
+			border-left-color: #2196F3;
+		}
+		.price-card h3 {
+			color: #2196F3;
+		}
+		.forecast-card {
+			border-left-color: #FF9800;
+		}
+		.forecast-card h3 {
+			color: #FF9800;
+		}
+		.accuracy-card {
+			border-left-color: #4CAF50;
+		}
+		.about-card {
+			background: rgba(0, 0, 0, 0.3);
+			padding: 12px;
+			border-radius: 8px;
+			max-height: 150px;
+			overflow-y: auto;
+		}
+		.about-card h3 {
+			margin: 0 0 8px 0;
+			font-size: 12px;
+			color: #999;
+			text-transform: uppercase;
+		}
+		.about-card p {
+			font-size: 11px;
+			line-height: 1.4;
+			color: #ccc;
+			margin: 0;
+		}
+		.chart-panel {
+			background: rgba(0, 0, 0, 0.3);
+			border-radius: 8px;
+			padding: 15px;
+			display: flex;
+			flex-direction: column;
+			overflow: hidden;
+		}
+		.chart-panel h3 {
+			margin: 0 0 10px 0;
+			font-size: 14px;
+			color: #999;
+			text-transform: uppercase;
+		}
+		.chart-container {
+			flex: 1;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			overflow: hidden;
+		}
+		.chart-container img {
+			max-width: 100%;
+			max-height: 100%;
+			object-fit: contain;
+			background: white;
+			border-radius: 6px;
+			padding: 10px;
+		}
+		.stat-row {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			margin-top: 8px;
+			padding-top: 8px;
+			border-top: 1px solid rgba(255, 255, 255, 0.1);
+		}
+		.stat-label {
+			font-size: 11px;
+			color: #888;
+		}
+		.stat-value {
+			font-size: 14px;
+			color: white;
+			font-weight: bold;
+		}
+		.btn-new {
+			background: #4CAF50;
+			color: white;
+			border: none;
+			padding: 10px 24px;
+			border-radius: 5px;
+			font-size: 14px;
+			cursor: pointer;
+			text-decoration: none;
+			display: inline-block;
+			transition: background 0.3s;
+		}
+		.btn-new:hover {
+			background: #45a049;
+			text-decoration: none;
+		}
+		::-webkit-scrollbar {
+			width: 6px;
+		}
+		::-webkit-scrollbar-track {
+			background: rgba(0, 0, 0, 0.2);
+		}
+		::-webkit-scrollbar-thumb {
+			background: rgba(255, 255, 255, 0.3);
+			border-radius: 3px;
+		}
+		::-webkit-scrollbar-thumb:hover {
+			background: rgba(255, 255, 255, 0.5);
+		}
+	</style>
+</head>
+
+<body>
+	<div class="dashboard-container">
+		<!-- Header -->
+		<div class="header-section">
+			<div class="header-left">
+				<h2 class="white_text">{{ticker}} - {{sector}}</h2>
+				<p>{{country}} | <a href="{{website}}" target="_blank" style="color: #4CAF50;">{{website}}</a></p>
+			</div>
+			<a href="http://localhost:5555/" class="btn-new">← New Forecast</a>
+		</div>
+
+		<!-- Main Content Grid -->
+		<div class="content-grid">
+			<!-- Left Panel - Stats -->
+			<div class="left-panel">
+				<!-- Current Price -->
+				<div class="info-card price-card">
+					<h3>Current Price</h3>
+					<div class="value">${{current_price}}</div>
+					<div class="sub-value">{{max_date}}</div>
+				</div>
+
+				<!-- Forecast -->
+				<div class="info-card forecast-card">
+					<h3>Next Day Forecast</h3>
+					<div class="value">${{forecast}}</div>
+					<div class="sub-value">{{forecast_date}}</div>
+					<div class="stat-row">
+						<span class="stat-label">Uncertainty Range</span>
+						<span class="stat-value">± ${{bound}}</span>
+					</div>
+				</div>
+
+				<!-- Accuracy -->
+				<div class="info-card accuracy-card">
+					<h3>Model Accuracy</h3>
+					<div class="value">{{accuracy}}%</div>
+					<div class="stat-row">
+						<span class="stat-label">MAPE</span>
+						<span class="stat-value">{{mape}}%</span>
+					</div>
+					<div class="stat-row">
+						<span class="stat-label">R² Score</span>
+						<span class="stat-value">{{r2}}</span>
+					</div>
+					<div class="stat-row">
+						<span class="stat-label">Training Period</span>
+						<span class="stat-value" style="font-size: 11px;">{{min_date}} to {{max_date}}</span>
+					</div>
+				</div>
+
+				<!-- About Company -->
+				<div class="about-card">
+					<h3>About {{ticker}}</h3>
+					<p>{{summary}}</p>
+				</div>
+			</div>
+
+			<!-- Right Panel - Chart -->
+			<div class="chart-panel">
+				<h3>📈 Forecast Visualization</h3>
+				<div class="chart-container">
+					{% if plot_filename %}
+					<img src="../static/images/{{plot_filename}}" alt="Forecast Plot">
+					{% else %}
+					<p class="white_text">Plot not available</p>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
