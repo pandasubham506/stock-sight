@@ -2,7 +2,7 @@
 
 A modern Flask-based web application that predicts next-day stock prices using Facebook's Prophet time series forecasting algorithm. The application provides real-time stock market predictions with interactive visualizations and accuracy metrics.
 
-![Header](src/static/images/main_page.png)
+![Header](src/static/main/main_page.png)
 
 ## 🚀 Features
 
